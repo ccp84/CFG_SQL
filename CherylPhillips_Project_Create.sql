@@ -1,0 +1,76 @@
+CREATE DATABASE IF NOT EXISTS Games_Library;
+
+USE Games_Library;
+
+CREATE TABLE Member (
+member_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+email VARCHAR(50) NOT NULL,
+first_name VARCHAR(50),
+last_name VARCHAR(50)
+);
+
+CREATE TABLE Genre (
+genre_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(50) NOT NULL
+);
+
+CREATE TABLE Game (
+game_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+title VARCHAR(100) NOT NULL,
+genre BIGINT,
+CONSTRAINT
+	fk_genre
+	FOREIGN KEY
+	(genre)
+    REFERENCES
+    Genre (genre_id)
+    ON DELETE SET NULL
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Loan (
+loan_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+member BIGINT,
+game BIGINT,
+start_date DATE NOT NULL,
+end_date DATE,
+CONSTRAINT
+	fk_member
+    FOREIGN KEY
+    (member)
+    REFERENCES
+    Member (member_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT
+	fk_game
+    FOREIGN KEY
+    (game)
+    REFERENCES
+    Game (game_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
+
+CREATE TABLE Rating (
+rating_id BIGINT AUTO_INCREMENT PRIMARY KEY,
+score INT NOT NULL,
+game BIGINT,
+member BIGINT,
+CONSTRAINT
+	fk_gamerating
+    FOREIGN KEY
+    (game)
+    REFERENCES
+    Game (game_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE,
+CONSTRAINT
+	fk_memberrating
+    FOREIGN KEY
+    (member)
+    REFERENCES
+    Member (member_id)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE
+);
